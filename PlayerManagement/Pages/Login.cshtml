@@ -1,0 +1,711 @@
+@page
+@model PlayerManagement.Pages.LoginModel
+@{
+    Layout = null;
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Player Management - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 420px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @@keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .login-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .casino-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @@keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .login-body {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon svg.icon-left {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #999;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .input-icon .form-input {
+            padding-left: 46px;
+        }
+
+        /* Eye icon for password toggle - RIGHT SIDE */
+        .password-wrapper .form-input {
+            padding-right: 46px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 22px;
+            height: 22px;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .toggle-password:hover {
+            color: #667eea;
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        .toggle-password:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            outline: none;
+            background: white;
+        }
+
+        .form-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-input:not(:placeholder-shown) {
+            background: linear-gradient(to right, rgba(102, 126, 234, 0.02), rgba(118, 75, 162, 0.02));
+        }
+
+        .form-group:focus-within .form-label {
+            color: #667eea;
+        }
+
+        .form-group:focus-within .input-icon svg.icon-left {
+            color: #667eea;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-login:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-message {
+            background: #fee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            animation: shake 0.5s ease;
+        }
+
+        @@keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        /* Floating particles animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @@keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .particle:nth-child(1) { left: 10%; width: 10px; height: 10px; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; width: 8px; height: 8px; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 30%; width: 12px; height: 12px; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 40%; width: 6px; height: 6px; animation-delay: 6s; }
+        .particle:nth-child(5) { left: 50%; width: 14px; height: 14px; animation-delay: 8s; }
+        .particle:nth-child(6) { left: 60%; width: 9px; height: 9px; animation-delay: 10s; }
+        .particle:nth-child(7) { left: 70%; width: 11px; height: 11px; animation-delay: 12s; }
+        .particle:nth-child(8) { left: 80%; width: 7px; height: 7px; animation-delay: 14s; }
+        .particle:nth-child(9) { left: 90%; width: 13px; height: 13px; animation-delay: 16s; }
+
+        /* Input focus ripple effect */
+        @@keyframes ripple {
+            0% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
+            }
+            100% {
+                box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+            }
+        }
+
+        .form-input:focus {
+            animation: ripple 0.6s ease-out;
+        }
+
+        /* ============================================
+   RESPONSIVE DESIGN - MEDIA QUERIES
+   ============================================ */
+
+/* Tablet và màn hình nhỏ hơn (768px trở xuống) */
+@@media screen and (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    .login-container {
+        max-width: 100%;
+        border-radius: 16px;
+    }
+
+    .login-header {
+        padding: 35px 25px;
+    }
+
+    .login-header h1 {
+        font-size: 24px;
+    }
+
+    .casino-icon {
+        font-size: 42px;
+        margin-bottom: 12px;
+    }
+
+    .login-body {
+        padding: 35px 25px;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-input {
+        padding: 13px 14px;
+        font-size: 14px;
+    }
+
+    .input-icon .form-input {
+        padding-left: 44px;
+    }
+
+    .password-wrapper .form-input {
+        padding-right: 44px;
+    }
+
+    .btn-login {
+        padding: 13px;
+        font-size: 15px;
+    }
+}
+
+/* Mobile (480px trở xuống) */
+@@media screen and (max-width: 480px) {
+    body {
+        padding: 10px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .login-container {
+        border-radius: 12px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .login-header {
+        padding: 30px 20px;
+    }
+
+    .login-header h1 {
+        font-size: 22px;
+        margin-bottom: 6px;
+    }
+
+    .login-header p {
+        font-size: 13px;
+    }
+
+    .casino-icon {
+        font-size: 38px;
+        margin-bottom: 10px;
+    }
+
+    /* Giảm animation bounce trên mobile */
+    @@keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+
+    .login-body {
+        padding: 30px 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .form-input {
+        padding: 12px 14px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+
+    .input-icon svg.icon-left {
+        width: 18px;
+        height: 18px;
+        left: 14px;
+    }
+
+    .input-icon .form-input {
+        padding-left: 42px;
+    }
+
+    .password-wrapper .form-input {
+        padding-right: 42px;
+    }
+
+    .toggle-password {
+        width: 20px;
+        height: 20px;
+        right: 14px;
+    }
+
+    .btn-login {
+        padding: 12px;
+        font-size: 14px;
+        border-radius: 8px;
+        margin-top: 8px;
+    }
+
+    .error-message {
+        padding: 10px 14px;
+        font-size: 13px;
+        margin-bottom: 18px;
+        border-radius: 6px;
+    }
+
+    /* Giảm số lượng particles trên mobile */
+    .particle:nth-child(n+6) {
+        display: none;
+    }
+
+    /* Giảm hiệu ứng ripple trên mobile */
+    .btn-login::before {
+        transition: width 0.4s, height 0.4s;
+    }
+
+    .btn-login:hover::before {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* Mobile nhỏ (360px trở xuống) */
+@@media screen and (max-width: 360px) {
+    body {
+        padding: 8px;
+    }
+
+    .login-header {
+        padding: 25px 15px;
+    }
+
+    .login-header h1 {
+        font-size: 20px;
+    }
+
+    .login-header p {
+        font-size: 12px;
+    }
+
+    .casino-icon {
+        font-size: 34px;
+    }
+
+    .login-body {
+        padding: 25px 15px;
+    }
+
+    .form-label {
+        font-size: 12px;
+    }
+
+    .form-input {
+        padding: 11px 12px;
+        font-size: 13px;
+    }
+
+    .input-icon .form-input {
+        padding-left: 38px;
+    }
+
+    .password-wrapper .form-input {
+        padding-right: 38px;
+    }
+
+    .input-icon svg.icon-left {
+        width: 16px;
+        height: 16px;
+        left: 12px;
+    }
+
+    .toggle-password {
+        width: 18px;
+        height: 18px;
+        right: 12px;
+    }
+
+    .btn-login {
+        padding: 11px;
+        font-size: 13px;
+    }
+
+    .error-message {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Landscape mode cho mobile */
+@@media screen and (max-width: 768px) and (orientation: landscape) {
+    body {
+        padding: 10px;
+    }
+
+    .login-container {
+        max-width: 500px;
+    }
+
+    .login-header {
+        padding: 25px 20px;
+    }
+
+    .casino-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+
+    .login-header h1 {
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+
+    .login-header p {
+        font-size: 12px;
+    }
+
+    .login-body {
+        padding: 25px 20px;
+    }
+
+    /* Ẩn particles trong landscape mode */
+    .particles {
+        display: none;
+    }
+}
+
+/* High DPI displays (Retina) */
+@@media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min-device-pixel-ratio: 2),
+       only screen and (min-resolution: 192dpi),
+       only screen and (min-resolution: 2dppx) {
+    .form-input {
+        border-width: 1.5px;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Floating particles background -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-header">
+            <div class="casino-icon">🎰</div>
+            <h1>Player Management</h1>
+            <p>Player Portal Login</p>
+        </div>
+        <div class="login-body">
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="error-message">
+                    ⚠️ @Model.ErrorMessage
+                </div>
+            }
+            <form method="post">
+                <div class="form-group">
+                    <label class="form-label" for="Username">Username</label>
+                    <div class="input-icon">
+                        <svg class="icon-left" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <input asp-for="Username" class="form-input" type="text" placeholder="Nhập username" required autofocus />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="Password">Password</label>
+                    <div class="input-icon password-wrapper">
+                        <svg class="icon-left" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <input asp-for="Password" 
+                               id="passwordInput"
+                               class="form-input" 
+                               type="password" 
+                               placeholder="Nhập password" 
+                               required />
+                        
+                        <!-- Eye icon for toggle - RIGHT SIDE -->
+                        <svg class="toggle-password" 
+                             id="togglePassword" 
+                             onclick="togglePasswordVisibility()"
+                             xmlns="http://www.w3.org/2000/svg" 
+                             fill="none" 
+                             viewBox="0 0 24 24" 
+                             stroke="currentColor">
+                            <path id="eyeIcon" 
+                                  stroke-linecap="round" 
+                                  stroke-linejoin="round" 
+                                  stroke-width="2" 
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path id="eyePath" 
+                                  stroke-linecap="round" 
+                                  stroke-linejoin="round" 
+                                  stroke-width="2" 
+                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login">
+                    <span>Đăng nhập 🎲</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const eyePath = document.getElementById('eyePath');
+            const toggleIcon = document.getElementById('togglePassword');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                // Change to "eye-slash" icon
+                eyePath.setAttribute('d', 'M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88');
+                toggleIcon.style.color = '#667eea';
+            } else {
+                passwordInput.type = 'password';
+                // Change back to "eye" icon
+                eyePath.setAttribute('d', 'M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z');
+                toggleIcon.style.color = '#999';
+            }
+            
+            // Add bounce animation
+            const currentTransform = passwordInput.type === 'password' ? 'translateY(-50%) scale(1)' : 'translateY(-50%) scale(1)';
+            toggleIcon.style.transform = 'translateY(-50%) scale(0.8)';
+            setTimeout(() => {
+                toggleIcon.style.transform = currentTransform;
+            }, 150);
+        }
+
+        // Add smooth scroll on error
+        window.addEventListener('load', function() {
+            const errorMessage = document.querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+
+        // Prevent double submit
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            const submitBtn = document.querySelector('.btn-login');
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.7';
+            submitBtn.innerHTML = '<span>Đang đăng nhập...</span>';
+        });
+    </script>
+</body>
+</html>

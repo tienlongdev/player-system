@@ -1,0 +1,391 @@
+@page
+@model PlayerManagement.Pages.Admin.DashboardModel
+@{
+    var username = HttpContext.Session.GetString("Username");
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="~/css/admin-dashboard.css" />
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">🎰 Admin Panel</div>
+        <div class="navbar-user">
+            <div class="user-menu">
+                <div class="user-avatar" onclick="toggleDropdown()">
+                    <span class="avatar-icon">👤</span>
+                    <span class="username">@username</span>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="dropdown-menu" id="userDropdown">
+                    <div class="dropdown-header">
+                        <div class="user-info">
+                            <div class="user-avatar-large">👤</div>
+                            <div>
+                                <div class="user-name">@username</div>
+                                <div class="user-role">Administrator</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="/ChangePassword" class="dropdown-item">
+                        <span class="item-icon">🔐</span>
+                        <span>Đổi mật khẩu</span>
+                    </a>
+                    <a href="/Logout" class="dropdown-item logout">
+                        <span class="item-icon">🚪</span>
+                        <span>Đăng xuất</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Quản lý tài khoản Player</h1>
+            <p>Quản lý, reset password và khóa/mở tài khoản người chơi</p>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success">
+                ✓ @Model.SuccessMessage
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-error">
+                ⚠ @Model.ErrorMessage
+            </div>
+        }
+
+        <!-- Search Bar with Date Filter -->
+        <div class="search-bar">
+            <form method="get" style="display: flex; gap: 15px; flex-wrap: wrap; flex: 1;">
+                <input type="text"
+                       name="searchTerm"
+                       value="@Model.SearchTerm"
+                       class="search-input"
+                       placeholder="🔍 Tìm kiếm theo username, tên, card number..."
+                       style="flex: 1; min-width: 250px;" />
+
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <label style="font-size: 14px; color: #718096; white-space: nowrap;">📅 Lọc SPP từ:</label>
+                    <input type="date"
+                           name="fromDate"
+                           value="@Model.FromDate?.ToString("yyyy-MM-dd")"
+                           class="date-input" />
+                    <label style="font-size: 14px; color: #718096;">đến:</label>
+                    <input type="date"
+                           name="toDate"
+                           value="@Model.ToDate?.ToString("yyyy-MM-dd")"
+                           class="date-input" />
+                </div>
+
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+                @if (!string.IsNullOrEmpty(Model.SearchTerm) || Model.FromDate.HasValue || Model.ToDate.HasValue)
+                {
+                    <a href="/Admin/Dashboard" class="btn-search" style="text-decoration: none; background: #6c757d;">Xóa lọc</a>
+                }
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span>📋 Danh sách tài khoản</span>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a href="@Url.Page("/Admin/Dashboard", "ExportExcel", new { SearchTerm = Model.SearchTerm, FromDate = Model.FromDate?.ToString("yyyy-MM-dd"), ToDate = Model.ToDate?.ToString("yyyy-MM-dd") })"
+                       class="btn-logout"
+                       style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); text-decoration: none;">
+                        📥 Xuất Excel
+                    </a>
+                    @if (Model.PlayersWithoutAccount > 0)
+                    {
+                        <form method="post" asp-page-handler="Sync" style="display: inline;" onsubmit="return confirmSync(@Model.PlayersWithoutAccount);">
+                            <button type="submit" class="btn-logout" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); text-decoration: none; border: none; cursor: pointer;">
+                                🔄 Đồng bộ
+                            </button>
+                        </form>
+                    }
+                    <a href="/Admin/CreateAccount" class="btn-logout" style="background: rgba(255, 255, 255, 0.3); text-decoration: none;">
+                        ➕ Tạo tài khoản
+                    </a>
+                    <span>Tổng: @Model.TotalRecords tài khoản</span>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (Model.FromDate.HasValue || Model.ToDate.HasValue)
+                {
+                    <div style="padding: 15px; background: #e0e7ff; border-radius: 8px; margin-bottom: 20px; color: #3730a3; font-size: 14px;">
+                        <strong>📊 Đang hiển thị SPP Value:</strong>
+                        @if (Model.FromDate.HasValue && Model.ToDate.HasValue)
+                        {
+                            <span>từ @Model.FromDate.Value.ToString("dd/MM/yyyy") đến @Model.ToDate.Value.ToString("dd/MM/yyyy")</span>
+                        }
+                        else if (Model.FromDate.HasValue)
+                        {
+                            <span>từ @Model.FromDate.Value.ToString("dd/MM/yyyy") trở đi</span>
+                        }
+                        else
+                        {
+                            <span>đến @Model.ToDate.Value.ToString("dd/MM/yyyy")</span>
+                        }
+                    </div>
+                }
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Tên Player</th>
+                                <th>Card Number</th>
+                                <th>Tổng SPP</th>
+                                <th>Loại</th>
+                                <th>Trạng thái</th>
+                                <th>Đăng nhập cuối</th>
+                                <th>Ngày tạo</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.PlayerLogins.Any())
+                            {
+                                @foreach (var item in Model.PlayerLogins)
+                                {
+                                    <tr>
+                                        <td><strong>@item.Username</strong></td>
+                                        <td>@item.PlayerName</td>
+                                        <td>@item.CardNumber</td>
+                                        <td><strong style="color: #667eea;">@item.TotalSppValue.ToString("N0")</strong></td>
+                                        <td>
+                                            @if (item.IsAdmin)
+                                            {
+                                                <span class="badge badge-admin">👑 Admin</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-player">🎮 Player</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.IsActive)
+                                            {
+                                                <span class="badge badge-active">✓ Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-inactive">✗ Inactive</span>
+                                            }
+                                        </td>
+                                        <td>@(item.LastLoginDate?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa đăng nhập")</td>
+                                        <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <form method="post" asp-page-handler="ResetPassword" style="display: inline;">
+                                                    <input type="hidden" name="playerLoginId" value="@item.PlayerLoginId" />
+                                                    <input type="hidden" name="pageNumber" value="@Model.CurrentPage" />
+                                                    <button type="submit" class="btn btn-warning" onclick="return confirm('Reset password về mặc định (= username)?');">
+                                                        🔑 Reset
+                                                    </button>
+                                                </form>
+                                                <form method="post" asp-page-handler="ToggleStatus" style="display: inline;">
+                                                    <input type="hidden" name="playerLoginId" value="@item.PlayerLoginId" />
+                                                    <input type="hidden" name="pageNumber" value="@Model.CurrentPage" />
+                                                    @if (item.IsActive)
+                                                    {
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Khóa tài khoản này?');">
+                                                            🔒 Khóa
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button type="submit" class="btn btn-success" onclick="return confirm('Mở khóa tài khoản này?');">
+                                                            🔓 Mở
+                                                        </button>
+                                                    }
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="9" style="text-align: center; padding: 40px; color: #718096;">
+                                        <div style="font-size: 48px; margin-bottom: 10px;">🔍</div>
+                                        <div>Không tìm thấy tài khoản nào</div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @if (Model.TotalPages > 1)
+                {
+                    <div class="pagination-container">
+                        <div class="pagination-info">
+                            Hiển thị @((Model.CurrentPage - 1) * Model.PageSize + 1) - @(Math.Min(Model.CurrentPage * Model.PageSize, Model.TotalRecords))
+                            trong tổng số @Model.TotalRecords tài khoản
+                        </div>
+
+                        <div class="pagination">
+                            @if (Model.HasPrevious)
+                            {
+                                <a href="?pageNumber=1&pageSize=@Model.PageSize&searchTerm=@Model.SearchTerm&fromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&toDate=@Model.ToDate?.ToString("yyyy-MM-dd")" class="page-link">««</a>
+                                <a href="?pageNumber=@(Model.CurrentPage - 1)&pageSize=@Model.PageSize&searchTerm=@Model.SearchTerm&fromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&toDate=@Model.ToDate?.ToString("yyyy-MM-dd")" class="page-link">‹</a>
+                            }
+                            else
+                            {
+                                <span class="page-link disabled">««</span>
+                                <span class="page-link disabled">‹</span>
+                            }
+
+                            @{
+                                int startPage = Math.Max(1, Model.CurrentPage - 2);
+                                int endPage = Math.Min(Model.TotalPages, Model.CurrentPage + 2);
+
+                                for (int i = startPage; i <= endPage; i++)
+                                {
+                                    if (i == Model.CurrentPage)
+                                    {
+                                        <span class="page-link active">@i</span>
+                                    }
+                                    else
+                                    {
+                                        <a href="?pageNumber=@i&pageSize=@Model.PageSize&searchTerm=@Model.SearchTerm&fromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&toDate=@Model.ToDate?.ToString("yyyy-MM-dd")" class="page-link">@i</a>
+                                    }
+                                }
+                            }
+
+                            @if (Model.HasNext)
+                            {
+                                <a href="?pageNumber=@(Model.CurrentPage + 1)&pageSize=@Model.PageSize&searchTerm=@Model.SearchTerm&fromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&toDate=@Model.ToDate?.ToString("yyyy-MM-dd")" class="page-link">›</a>
+                                <a href="?pageNumber=@Model.TotalPages&pageSize=@Model.PageSize&searchTerm=@Model.SearchTerm&fromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&toDate=@Model.ToDate?.ToString("yyyy-MM-dd")" class="page-link">»»</a>
+                            }
+                            else
+                            {
+                                <span class="page-link disabled">›</span>
+                                <span class="page-link disabled">»»</span>
+                            }
+                        </div>
+
+                        <div style="display: flex; gap: 15px; align-items: center;">
+                            <div class="page-size-selector">
+                                <label style="font-size: 14px; color: #718096;">Hiển thị:</label>
+                                <select onchange="window.location.href='?pageNumber=1&pageSize=' + this.value + '&searchTerm=@Model.SearchTerm&fromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&toDate=@Model.ToDate?.ToString("yyyy-MM-dd")'">
+                                    <option value="10" selected="@(Model.PageSize == 10)">10</option>
+                                    <option value="20" selected="@(Model.PageSize == 20)">20</option>
+                                    <option value="50" selected="@(Model.PageSize == 50)">50</option>
+                                    <option value="100" selected="@(Model.PageSize == 100)">100</option>
+                                </select>
+                            </div>
+
+                            <div class="page-jump">
+                                <label style="font-size: 14px; color: #718096;">Trang:</label>
+                                <input type="number" id="jumpPage" min="1" max="@Model.TotalPages" value="@Model.CurrentPage" />
+                                <button onclick="jumpToPage()">Đi</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .date-input {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #2d3748;
+            transition: all 0.3s ease;
+        }
+
+            .date-input:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+    </style>
+
+    <script>
+        function jumpToPage() {
+            const page = document.getElementById('jumpPage').value;
+            const maxPage = @Model.TotalPages;
+            const searchTerm = '@Model.SearchTerm';
+            const fromDate = '@Model.FromDate?.ToString("yyyy-MM-dd")';
+            const toDate = '@Model.ToDate?.ToString("yyyy-MM-dd")';
+
+            if (page >= 1 && page <= maxPage) {
+                window.location.href = '?pageNumber=' + page + '&pageSize=@Model.PageSize&searchTerm=' + searchTerm + '&fromDate=' + fromDate + '&toDate=' + toDate;
+            } else {
+                alert('Vui lòng nhập số trang từ 1 đến ' + maxPage);
+            }
+        }
+
+        document.getElementById('jumpPage').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function toggleDropdown() {
+            const userMenu = document.querySelector('.user-menu');
+            const overlay = document.getElementById('overlay');
+
+            userMenu.classList.toggle('active');
+
+            if (userMenu.classList.contains('active')) {
+                if (!overlay) {
+                    const newOverlay = document.createElement('div');
+                    newOverlay.id = 'overlay';
+                    newOverlay.className = 'overlay active';
+                    newOverlay.onclick = closeDropdown;
+                    document.body.appendChild(newOverlay);
+                }
+            } else {
+                closeDropdown();
+            }
+        }
+
+        function closeDropdown() {
+            const userMenu = document.querySelector('.user-menu');
+            const overlay = document.getElementById('overlay');
+
+            userMenu.classList.remove('active');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        });
+
+        function confirmSync(count) {
+            if (count === 0) return false;
+
+            const message = `🔄 ĐỒNG BỘ TẠO TÀI KHOẢN TỰ ĐỘNG\n\n` +
+                          `Số lượng: ${count} Player chưa có tài khoản\n` +
+                          `Username: Card Number\n` +
+                          `Password: Card Number (giống username)\n\n` +
+                          `⚠️ Tất cả tài khoản sẽ được tạo tự động!\n\n` +
+                          `Nhấn OK để tiếp tục, Cancel để hủy.`;
+
+            return confirm(message);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1233 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "EntityContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "IrregularWords": null,
+   "MinimumProductVersion": "2.6.1248",
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PluralRules": null,
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "PlayerManagement",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "SingularRules": null,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[Account]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Article]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ArticleFamily]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ArticleStock]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Attachment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AttachmentType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[BlackList]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[BlackListPlayer]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashHand]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashHandPlayer]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashPlayer]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashPlayerBreak]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashPlayerChips]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashPlayerStack]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashPlayerTip]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashRake]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashSession]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashSessionType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashTable]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashTypeRake]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CashWaitingList]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Causal]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Club]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ClubRoom]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Country]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Currency]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CustomProperty]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CustomReport]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Device]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Document]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DocumentActivity]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DocumentDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DocumentTemplate]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DocumentType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Domain]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DomainCloudMessage]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DomainEntityChange]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DomainPlayerTicket]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Entity]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EntityChanges]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Feature]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Filter]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[GameType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Group]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Localization]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LocationFeature]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Lock]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Mail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MailRecipient]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MarketingTemplate]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MembershipAffiliation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MembershipCardType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Menu]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MenuItem]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MenuLink]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[OLAPView]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[OLAPViewColumn]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[OLAPViewSchema]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PaymentModality]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PaymentModalityPerPlayer]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PaymentType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Permission]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Player]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlayerAccount]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlayerAlert]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlayerClub]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlayerDomain]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlayerHistory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlayerLogin]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlayerVIP]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlayerVIPLevel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Ranking]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RankingLeague]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RankingPlayer]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RankingPlayerPoints]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RankingReward]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RankingTournament]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Release]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Report]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReportLink]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Season]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SeasonLeague]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SeasonLeagueFormula]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SeasonLeagueStage]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Server]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ServerAddon]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ServerAddonEntity]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ServerBackup]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Session]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SMS]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SmsActivity]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SMSRecipient]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Sponsor]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[sync_history]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[sync_row]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[sync_status]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[sync_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[sync_version]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Team]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TeamMember]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TemplateDescription]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TemplateLevel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TemplateLevelStruct]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TemplatePayout]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TemplatePayoutRate]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TemplatePayoutStruct]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Ticket]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Tournament]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentAction]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentActive]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentAudio]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentAudioItem]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentBillboard]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentBuyin]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentChild]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentLayout]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentLevel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentLockedTableSeat]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentPenality]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentPlayers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentRate]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentRateExpanded]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentRebuyAddon]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentRebuyAddonBuyin]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentReservation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentTable]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentTheme]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentThemeAspect]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentUser]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentWaiting]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TournamentWebDetails]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Transaction]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TransactionType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[User]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserPerClub]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Vendor]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[View]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ViewColumn]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VIPCampaign]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VIPCategory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VIPLevel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VIPProduct]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VIPPromotion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VIPPromotionPerCashType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[vAccount]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vAppSettings]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vArticle]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vArticleFamily]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vArticleStock]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vAttachment]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vAttachmentType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vBlackList]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vBlackListPlayer]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCashHand]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCashPlayerDetails]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCashPlayerPointsPerCashType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCashPlayersCalculationData]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCashSession]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCashSessionTransaction]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCashTable]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCashType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCategory]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCausal]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vClub]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vClubRoom]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vClubTransaction]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCountry]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCurrency]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCustomProperty]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vCustomReport]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDevice]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDocument]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDocumentActivity]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDocumentTemplate]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDocumentType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDomain]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDomainCloudMessage]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDomainEntityChange]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDomainPlayerTicket]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDomainPlayerTicket_DomainExport]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vEntityChanges]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vFeature]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vFilter]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vGameType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vGroup]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vLastTournament]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vLeague]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vLiPCloudMessage]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vLiPPlayerTicket]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vLocalization]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vMail]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vMarketingTemplate]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vMembershipAffiliation]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vMembershipCardType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vMenu]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vMenuItem]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vMenuLocalized]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vOLAPView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vOLAPViewSchema]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPaymentModality]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPaymentModalityPerPlayer]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPaymentType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayer]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerAccount]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerAlert]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerClub]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerDomain]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerEntry]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerHistory]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerLastAccess]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerTicket]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerTournamentResults]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerTransaction]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vPlayerVIP]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRanking]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingCash]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingManual]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingPeriod]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingPlayer]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingPlayerPoints]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingPlayerPointsPerCash]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingPlayerPointsPerManual]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingPlayerPointsPerTournament]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingReward]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingSponsor]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRankingTournament]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRelease]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vReport]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSeason]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vServer]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vServerAddon]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vServerAddonEntity]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vServerBackup]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSettings]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSMS]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSmsActivity]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSponsor]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSTCash]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSTCashPlayer]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSTCashPlayerPerCashType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSTCashSessionType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSTPlayers]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vSTTournaments]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTeam]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTemplateDescription]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTemplateLevel]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTemplatePayout]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTicket]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournament]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentAction]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentActive]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentAll]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentAudio]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentBillboard]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentLayout]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentLog]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentPlayerEntries]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentPlayers]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentPlayersBestPlacement]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentPlayersCalculationData]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentPlayersCount]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentRateExpanded]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentRebuyAddon]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentStatus]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentTheme]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentThemeAspect]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentTicket]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTournamentTransaction]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTransaction]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vTransactionType]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vUser]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVendor]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVIPCampaign]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVIPCampaignTransaction]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVIPCashSession]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVIPCategory]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVIPProduct]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVIPPromotion]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVIPSystem]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVIPTournament]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwAPI_TournamentRankingPerCountry]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_Article]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_ArticleFamily]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_CounterSales]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_DocumentDetail]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_Player]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_PurchaseOrder]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_Tournament]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_TournamentLevel]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_TournamentPayment]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_TournamentPayout]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_TournamentPlayer]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwReport_Vendor]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwStats_TournamentPayment]",
+         "ObjectType": 3
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false
+}

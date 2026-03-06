@@ -1,0 +1,361 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using PlayerManagement.Helpers;
+using PlayerManagement.Models;
+
+namespace PlayerManagement.Pages.Admin
+{
+    public class CreateAccountModel : PageModel
+    {
+        private readonly EntityContext _context;
+
+        public CreateAccountModel(EntityContext context)
+        {
+            _context = context;
+        }
+
+        [BindProperty]
+        public bool IsAdmin { get; set; }
+
+        [BindProperty]
+        public string Username { get; set; }
+
+        [BindProperty]
+        public Guid? SelectedPlayerId { get; set; }
+
+        [BindProperty]
+        public string Password { get; set; }
+
+        [BindProperty]
+        public string ConfirmPassword { get; set; }
+
+        public List<SelectListItem> PlayerList { get; set; } = new List<SelectListItem>();
+        public string SuccessMessage { get; set; }
+        public string ErrorMessage { get; set; }
+
+        // Statistics for sync feature
+        public int TotalPlayers { get; set; }
+        public int PlayersWithAccount { get; set; }
+        public int PlayersWithoutAccount { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToPage("/Login");
+            }
+
+            await LoadPlayers();
+            await LoadStatistics();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToPage("/Login");
+            }
+
+            await LoadPlayers();
+            await LoadStatistics();
+
+            // Validation
+            if (IsAdmin)
+            {
+                if (string.IsNullOrWhiteSpace(Username))
+                {
+                    ErrorMessage = "Vui lòng nhập username cho Admin";
+                    return Page();
+                }
+            }
+            else
+            {
+                if (!SelectedPlayerId.HasValue || SelectedPlayerId.Value == Guid.Empty)
+                {
+                    ErrorMessage = "Vui lòng chọn Player";
+                    return Page();
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                ErrorMessage = "Vui lòng nhập mật khẩu";
+                return Page();
+            }
+
+            if (Password != ConfirmPassword)
+            {
+                ErrorMessage = "Mật khẩu xác nhận không khớp";
+                return Page();
+            }
+
+            if (Password.Length < 4)
+            {
+                ErrorMessage = "Mật khẩu phải có ít nhất 4 ký tự";
+                return Page();
+            }
+
+            try
+            {
+                Guid playerId;
+                string accountUsername;
+
+                if (IsAdmin)
+                {
+                    // Check if username already exists
+                    var existingUser = await _context.PlayerLogins
+                        .FirstOrDefaultAsync(pl => pl.Username == Username);
+
+                    if (existingUser != null)
+                    {
+                        ErrorMessage = $"Username '{Username}' đã tồn tại";
+                        return Page();
+                    }
+
+                    // Create new Player record for Admin
+                    var newPlayer = new Player
+                    {
+                        PlayerId = Guid.NewGuid(),
+                        FirstName = "Admin",
+                        LastName = Username,
+                        CardNumber = $"ADMIN-{DateTime.Now:yyyyMMddHHmmss}",
+                        CreationDate = DateTime.Now,
+                        IsLinkedWithDomain = false,
+                        EmailNotify = false,
+                        Smsnotify = false
+                    };
+
+                    _context.Players.Add(newPlayer);
+                    playerId = newPlayer.PlayerId;
+                    accountUsername = Username;
+                }
+                else
+                {
+                    // Check if Player already has a login account
+                    var existingLogin = await _context.PlayerLogins
+                        .FirstOrDefaultAsync(pl => pl.PlayerId == SelectedPlayerId.Value);
+
+                    if (existingLogin != null)
+                    {
+                        ErrorMessage = "Player này đã có tài khoản đăng nhập";
+                        return Page();
+                    }
+
+                    // Get player info
+                    var player = await _context.Players
+                        .FirstOrDefaultAsync(p => p.PlayerId == SelectedPlayerId.Value);
+
+                    if (player == null)
+                    {
+                        ErrorMessage = "Không tìm thấy thông tin Player";
+                        return Page();
+                    }
+
+                    playerId = SelectedPlayerId.Value;
+                    // Use CardNumber as username for Player accounts
+                    accountUsername = player.CardNumber;
+
+                    // Check if username (CardNumber) already exists
+                    var existingUser = await _context.PlayerLogins
+                        .FirstOrDefaultAsync(pl => pl.Username == accountUsername);
+
+                    if (existingUser != null)
+                    {
+                        ErrorMessage = $"Username '{accountUsername}' đã tồn tại";
+                        return Page();
+                    }
+                }
+
+                // Create PlayerLogin
+                var playerLogin = new PlayerLogin
+                {
+                    PlayerLoginId = Guid.NewGuid(),
+                    PlayerId = playerId,
+                    Username = accountUsername,
+                    PasswordHash = SecurityHelper.GetMD5Hash(Password),
+                    IsAdmin = IsAdmin,
+                    IsActive = true,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
+                };
+
+                _context.PlayerLogins.Add(playerLogin);
+                await _context.SaveChangesAsync();
+
+                SuccessMessage = $"Tạo tài khoản thành công! Username: {accountUsername}";
+
+                // Clear form
+                Username = string.Empty;
+                Password = string.Empty;
+                ConfirmPassword = string.Empty;
+                SelectedPlayerId = null;
+                IsAdmin = false;
+
+                await LoadPlayers();
+                await LoadStatistics();
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Lỗi khi tạo tài khoản: {ex.Message}";
+                return Page();
+            }
+        }
+
+        // NEW: Sync accounts handler
+        public async Task<IActionResult> OnPostSyncAsync()
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToPage("/Login");
+            }
+
+            try
+            {
+                // Get all players without login accounts
+                var playersWithoutLogin = await _context.Players
+                    .Where(p => !_context.PlayerLogins.Any(pl => pl.PlayerId == p.PlayerId))
+                    .ToListAsync();
+
+                if (!playersWithoutLogin.Any())
+                {
+                    ErrorMessage = "Không có Player nào cần đồng bộ. Tất cả đã có tài khoản!";
+                    await LoadPlayers();
+                    await LoadStatistics();
+                    return Page();
+                }
+
+                int createdCount = 0;
+                int errorCount = 0;
+                var errors = new List<string>();
+
+                foreach (var player in playersWithoutLogin)
+                {
+                    try
+                    {
+                        // Skip if CardNumber is null or empty
+                        if (string.IsNullOrWhiteSpace(player.CardNumber))
+                        {
+                            errors.Add($"Player {player.FirstName} {player.LastName} không có Card Number");
+                            errorCount++;
+                            continue;
+                        }
+
+                        // Check if username (CardNumber) already exists
+                        var existingUsername = await _context.PlayerLogins
+                            .FirstOrDefaultAsync(pl => pl.Username == player.CardNumber);
+
+                        if (existingUsername != null)
+                        {
+                            errors.Add($"Username '{player.CardNumber}' đã tồn tại");
+                            errorCount++;
+                            continue;
+                        }
+
+                        // Create PlayerLogin
+                        var playerLogin = new PlayerLogin
+                        {
+                            PlayerLoginId = Guid.NewGuid(),
+                            PlayerId = player.PlayerId,
+                            Username = player.CardNumber,
+                            PasswordHash = SecurityHelper.GetMD5Hash(player.CardNumber), // Password = CardNumber
+                            IsAdmin = false,
+                            IsActive = true,
+                            CreatedDate = DateTime.Now,
+                            UpdatedDate = DateTime.Now
+                        };
+
+                        _context.PlayerLogins.Add(playerLogin);
+                        createdCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add($"Lỗi với Player {player.FirstName} {player.LastName}: {ex.Message}");
+                        errorCount++;
+                    }
+                }
+
+                // Save all changes
+                await _context.SaveChangesAsync();
+
+                // Build success message
+                if (createdCount > 0)
+                {
+                    SuccessMessage = $"✓ Đã tạo thành công {createdCount} tài khoản! " +
+                                   $"(Username & Password = Card Number)";
+                }
+
+                if (errorCount > 0)
+                {
+                    ErrorMessage = $"⚠ Có {errorCount} lỗi: " + string.Join("; ", errors.Take(3));
+                    if (errors.Count > 3)
+                    {
+                        ErrorMessage += $" và {errors.Count - 3} lỗi khác...";
+                    }
+                }
+
+                await LoadPlayers();
+                await LoadStatistics();
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Lỗi khi đồng bộ: {ex.Message}";
+                await LoadPlayers();
+                await LoadStatistics();
+                return Page();
+            }
+        }
+
+        private async Task LoadPlayers()
+        {
+            try
+            {
+                // Get players who don't have a login account yet
+                var playersWithoutLogin = await _context.Players
+                    .Where(p => !_context.PlayerLogins.Any(pl => pl.PlayerId == p.PlayerId))
+                    .OrderBy(p => p.LastName)
+                    .ThenBy(p => p.FirstName)
+                    .Select(p => new
+                    {
+                        p.PlayerId,
+                        FullName = $"{p.FirstName} {p.LastName}",
+                        p.CardNumber
+                    })
+                    .ToListAsync();
+
+                PlayerList = playersWithoutLogin.Select(p => new SelectListItem
+                {
+                    Value = p.PlayerId.ToString(),
+                    Text = $"{p.FullName} - Card: {p.CardNumber ?? "N/A"}"
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Lỗi khi tải danh sách Player: {ex.Message}";
+                PlayerList = new List<SelectListItem>();
+            }
+        }
+
+        private async Task LoadStatistics()
+        {
+            try
+            {
+                TotalPlayers = await _context.Players.CountAsync();
+                PlayersWithAccount = await _context.PlayerLogins
+                    .Where(pl => pl.IsAdmin == false)
+                    .CountAsync();
+                PlayersWithoutAccount = TotalPlayers - PlayersWithAccount;
+            }
+            catch
+            {
+                TotalPlayers = 0;
+                PlayersWithAccount = 0;
+                PlayersWithoutAccount = 0;
+            }
+        }
+    }
+}

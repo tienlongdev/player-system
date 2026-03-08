@@ -462,7 +462,8 @@ namespace PlayerManagement.Pages.Admin
                     IsActive = player.IsActive,
                     LastLoginDate = player.LastLoginDate,
                     CreatedDate = player.CreatedDate,
-                    TotalSppValue = totalSpp
+                    TotalSppValue = totalSpp,
+                    Balance = (await _context.VPlayerAccounts.FirstOrDefaultAsync(x => x.PlayerId == player.PlayerId && x.AccountTypeDescription == "Account"))?.Balance
                 });
             }
         }
@@ -496,5 +497,6 @@ namespace PlayerManagement.Pages.Admin
         public DateTime? LastLoginDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public decimal TotalSppValue { get; set; }
+        public decimal? Balance { get; set; }
     }
 }

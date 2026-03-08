@@ -950,6 +950,10 @@
                     <span class="info-value">@Model.PlayerInfo.CardNumber</span>
                 </div>
                 <div class="info-item">
+                    <span class="info-label">Balance</span>
+                    <span class="info-value">@Model.Balance?.ToString("N0")</span>
+                </div>
+                <div class="info-item">
                     <span class="info-label">Email</span>
                     <span class="info-value">@(Model.PlayerInfo.Email ?? "N/A")</span>
                 </div>

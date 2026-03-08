@@ -146,6 +146,7 @@
                                 <th>Username</th>
                                 <th>Tên Player</th>
                                 <th>Card Number</th>
+                                <th>Balance</th>
                                 <th>Tổng SPP</th>
                                 <th>Loại</th>
                                 <th>Trạng thái</th>
@@ -163,6 +164,7 @@
                                         <td><strong>@item.Username</strong></td>
                                         <td>@item.PlayerName</td>
                                         <td>@item.CardNumber</td>
+                                        <td><strong style="color: #667eea;">@item.Balance?.ToString("N0")</strong></td>
                                         <td><strong style="color: #667eea;">@item.TotalSppValue.ToString("N0")</strong></td>
                                         <td>
                                             @if (item.IsAdmin)

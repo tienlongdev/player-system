@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Models;
+using System.Numerics;
 
 namespace PlayerManagement.Pages.Player
 {
@@ -19,7 +20,7 @@ namespace PlayerManagement.Pages.Player
         public decimal TotalValue { get; set; }
         public decimal TotalVipValue { get; set; }
         public decimal TotalSppValue { get; set; }
-
+        public decimal? Balance { get; set; }
         public async Task<IActionResult> OnGetAsync()
         {
             var playerId = HttpContext.Session.GetString("PlayerId");
@@ -82,7 +83,8 @@ namespace PlayerManagement.Pages.Player
                         ReferenceDescription = t.ReferenceDescription,
                         ViplevelDescription = t.ViplevelDescription,
                         ViplevelColor = t.ViplevelColor,
-                        Username = t.Username
+                        Username = t.Username,
+
                     };
                 })
                 .OrderByDescending(t => t.Date) // Sort back to descending for display
@@ -91,6 +93,8 @@ namespace PlayerManagement.Pages.Player
             TotalValue = Transactions.Sum(t => t.Value ?? 0);
             TotalVipValue = Transactions.Sum(t => t.Vipvalue ?? 0);
             TotalSppValue = Transactions.LastOrDefault()?.TotalSpp ?? 0; // Latest running total
+            Balance = (await _context.VPlayerAccounts.FirstOrDefaultAsync(x => x.PlayerId == playerGuid && x.AccountTypeDescription == "Account"))?.Balance;
+
 
             return Page();
         }

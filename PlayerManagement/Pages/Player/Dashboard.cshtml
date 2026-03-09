@@ -1019,7 +1019,52 @@
                 </table>
             </div>
         </div>
+        @if (Model.SubPlayers != null && Model.SubPlayers.Any())
+        {
+            <div class="card mt-30">
+                <div class="card-header">
+                    👥 Danh sách Player P (@Model.SubPlayers.Count players)
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Card Number</th>
+                                <th>Họ và tên</th>
+                                <th>Số điện thoại</th>
+                                <th>Ngày sinh</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var player in Model.SubPlayers)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <a href="/Player/PlayerPDetails?id=@player.PlayerId"
+                                                   style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                                color: white;
+                                                padding: 6px 16px;
+                                                border-radius: 6px;
+                                                text-decoration: none;
+                                                font-size: 13px;
+                                                display: inline-block;
+                                                transition: all 0.3s ease;">
+                                                @player.CardNumber
+                                            </a>
+                                        </strong>
+                                    </td>
+                                    <td>@player.FirstName @player.LastName</td>
+                                    <td>@player.Phone</td>
+                                    <td>@(player.BirthDate?.ToString("dd/MM/yyyy") ?? "N/A")</td>
 
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
 
     </div>
     <script>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PlayerManagement.Models;
 using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace PlayerManagement.Pages.Player
 {
@@ -17,10 +18,12 @@ namespace PlayerManagement.Pages.Player
 
         public Models.Player PlayerInfo { get; set; }
         public List<PlayerTransactionViewModel> Transactions { get; set; }
+        public List<Models.Player> SubPlayers { get; set; }
         public decimal TotalValue { get; set; }
         public decimal TotalVipValue { get; set; }
         public decimal TotalSppValue { get; set; }
         public decimal? Balance { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var playerId = HttpContext.Session.GetString("PlayerId");
@@ -33,6 +36,26 @@ namespace PlayerManagement.Pages.Player
 
             PlayerInfo = await _context.Players
                 .FirstOrDefaultAsync(p => p.PlayerId == playerGuid);
+
+            // Lấy danh sách Player P nếu user hiện tại có NickName = 'A'
+            SubPlayers = new List<Models.Player>();
+            if (PlayerInfo?.NickName == "A" && !string.IsNullOrEmpty(PlayerInfo.CardNumber))
+            {
+                var cardNumber = PlayerInfo.CardNumber;
+
+                // Lấy phần prefix trước các chữ số ở cuối (ví dụ: "LPT-DN-R00005" -> "LPT-DN-R")
+                var match = Regex.Match(cardNumber, @"^[A-Z]+-[A-Z]+-[A-Z]+");
+
+                if (match.Success)
+                {
+                    var prefix = match.Value; // "LPT-DN-R"
+
+                    SubPlayers = await _context.Players
+                        .Where(p => p.NickName == "P" && p.CardNumber.StartsWith(prefix))
+                        .OrderBy(p => p.CardNumber)
+                        .ToListAsync();
+                }
+            }
 
             // Query với running total SPP
             var transactionData = await _context.VVipcampaignTransactions
